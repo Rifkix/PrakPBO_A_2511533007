@@ -1,10 +1,12 @@
 package Pekan1;
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class Main {
 
 	public static void main(String[] args) {
 		Scanner input = new Scanner(System.in);
+		ArrayList<Rekening> daftarRekening = new ArrayList();
 		Rekening akunAktif = null; //Objek belum diinisialisasi (null)
 		boolean isRunning = true;
 		
@@ -16,6 +18,7 @@ public class Main {
 			System.out.println("2. Setor Tunai");
 			System.out.println("3. Tarik Tunai");
 			System.out.println("4. Cek Informasi Rekening");
+			System.out.println("5. Ganti Akun");
 			System.out.println("0. Keluar");
 			System.out.print("Pilih menu: ");
 			
@@ -33,9 +36,9 @@ public class Main {
 				if (saldo < 50000) {
 					System.out.println("saldo kurang");
 				} else {
-					// Instansiasi Object / Menjalankan Constructor
 					akunAktif = new Rekening(no, nama, saldo);
-					break;					
+					daftarRekening.add(akunAktif);
+					break;
 				}
 			
 			case 2:
@@ -49,7 +52,13 @@ public class Main {
 				break;
 				
 			case 3:
-				System.out.println("Fitur ini akan kerjakan sebagai Tugas Mandiri.");
+				if (akunAktif == null) {
+					System.out.println("Error: Anda belum memiliki nomor rekening");
+				} else {
+					System.out.println("Masukkan nominal tarik tunai: ");
+					double tarik = input.nextDouble();
+					akunAktif.tarikTunai(tarik);
+				}
 				break;
 				
 			case 4:
@@ -57,6 +66,25 @@ public class Main {
 					System.out.println("Error: Anda belum membuka rekening!");
 				} else {
 					akunAktif.cekInformasi();
+				}
+				break;
+				
+			case 5:
+				System.out.println("Masukkan No Rekening Akun yang dicari:");
+				String norek = input.nextLine();
+				boolean ditemukan = false;
+				
+				for (Rekening rek : daftarRekening) {
+					if (rek.nomorRekening.equals(norek)) {
+						akunAktif = rek;
+						ditemukan = true;
+						System.out.println("Berhasil Akun aktif saat ini atas nama: " + rek.namaPemilik);
+						break;
+					}
+				}
+				
+				if (!ditemukan) {
+					System.out.println("Error: Nomor rekening tidak ditemukan");
 				}
 				break;
 				

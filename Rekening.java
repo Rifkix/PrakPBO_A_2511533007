@@ -30,9 +30,15 @@ public class Rekening {
 		System.out.println("---------------------");
 	}
 	
-	public static void main(String[] args) {
-		
-
+	public void tarikTunai(double nominal) {
+		if (nominal < 10000) {
+			System.out.println("Transaksi Gagal : minimal nominal penarikan 10.000");
+		} else if (nominal > saldo) {
+			System.out.println("Transaksi Gagal: saldo tidak mencukupi. Saldo Anda: Rp" + saldo);
+		} else {
+			saldo = saldo - nominal;
+			System.out.println("Tarik tunai Rp" + nominal + " berhasil. Saldo saat ini: Rp" + saldo);
+		}
 	}
-
+	
 }
