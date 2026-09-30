@@ -1,4 +1,4 @@
-package Pekan1;
+package Pekan3;
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -19,6 +19,7 @@ public class Main {
 			System.out.println("3. Tarik Tunai");
 			System.out.println("4. Cek Informasi Rekening");
 			System.out.println("5. Ganti Akun");
+			System.out.println("6. Cetak Mutasi (Riwayat");
 			System.out.println("0. Keluar");
 			System.out.print("Pilih menu: ");
 			
@@ -31,15 +32,18 @@ public class Main {
 				String no = input.nextLine();
 				System.out.print("Masukkan Nama Pemilik: ");
 				String nama = input.nextLine();
+				System.out.print("Masukkan PIN(6 digit angka): ");
+				String pin = input.nextLine();
 				System.out.print("Masukkan Saldo Awal: ");
 				double saldo = input.nextDouble();
+				
 				if (saldo < 50000) {
 					System.out.println("saldo kurang");
 				} else {
-					akunAktif = new Rekening(no, nama, saldo);
+					akunAktif = new Rekening(no, nama, saldo, pin);
 					daftarRekening.add(akunAktif);
-					break;
 				}
+				break;
 			
 			case 2:
 				if (akunAktif == null) {
@@ -55,9 +59,15 @@ public class Main {
 				if (akunAktif == null) {
 					System.out.println("Error: Anda belum memiliki nomor rekening");
 				} else {
-					System.out.println("Masukkan nominal tarik tunai: ");
-					double tarik = input.nextDouble();
-					akunAktif.tarikTunai(tarik);
+					System.out.println("Masukkan PIN: ");
+					String inputPin = input.nextLine();
+					if (akunAktif.otentikasi(inputPin) == true) {
+						System.out.println("Masukkan nominal tarik tunai: ");
+						double tarik = input.nextDouble();
+						akunAktif.tarikTunai(tarik);
+					} else {
+						System.out.println("Akses DItolak: PIN yang Anda masukkan salah!");
+					}
 				}
 				break;
 				
@@ -75,16 +85,30 @@ public class Main {
 				boolean ditemukan = false;
 				
 				for (Rekening rek : daftarRekening) {
-					if (rek.nomorRekening.equals(norek)) {
+					if (rek.getNomorRekening().equals(norek)) {
 						akunAktif = rek;
 						ditemukan = true;
-						System.out.println("Berhasil Akun aktif saat ini atas nama: " + rek.namaPemilik);
+						System.out.println("Berhasil Akun aktif saat ini atas nama: " + rek.getNamaPemilik());
 						break;
 					}
 				}
 				
 				if (!ditemukan) {
 					System.out.println("Error: Nomor rekening tidak ditemukan");
+				}
+				break;
+			
+			case 6:
+				if (akunAktif == null) {
+					System.out.println("Error: Anda belum memiliki nomor rekening");
+				} else {
+					System.out.println("Masukkan PIN: ");
+					String inputPin = input.nextLine();
+					if (akunAktif.otentikasi(inputPin) == true) {
+						akunAktif.cetakMutasi();
+					} else {
+						System.out.println("Akses Ditolak: PIN yang Anda masukkan salah!");
+					}
 				}
 				break;
 				
