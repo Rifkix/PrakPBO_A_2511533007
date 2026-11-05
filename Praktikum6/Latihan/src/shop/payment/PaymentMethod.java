@@ -1,0 +1,9 @@
+package shop.payment;
+
+/** Contract for every payment method.  */
+public interface PaymentMethod {
+    String getName();
+
+    /** @return tru if the payment succeeds */
+    boolean pay(long amount);
+}
